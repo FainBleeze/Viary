@@ -4,6 +4,15 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
 
+    <color name="color_diary">#F08080</color>
+    <color name="color_film">#6495ED</color>
+    <color name="color_book">#FFDEAD</color>
+    <color name="color_pic">#BA55D3</color>
+    <color name="dark_diary">#80F08080</color>
+    <color name="dark_film">#806495ED</color>
+    <color name="dark_book">#80FFDEAD</color>
+    <color name="dark_pic">#80BA55D3</color>
+
     <color name="transparent">#00000000</color><!--透明色 -->   
     <color name="white">#FFFFFF</color><!--白色 -->   
     <color name="ivory">#FFFFF0</color><!--象牙色 -->   

@@ -3,6 +3,20 @@
 
 
 
+### 工具版本信息
+
+- gradle：'com.android.tools.build:gradle:3.6.2'
+
+- ```xml
+  applicationId "com.hyxy.viary"
+  minSdkVersion 16
+  targetSdkVersion 29
+  versionCode 1
+  versionName "1.0"
+  ```
+
+
+
 ### 初步规划
 
 ##### 页面1：时间页

@@ -10,7 +10,7 @@
 - 显示日期时间轴
   - 可选择日期记日记
   - 有日记的日期显示其内容
-  - 效果类似下图                                                                                          <img src="images/Screenshot_20200615_133340_net.saltycrackers.dayg.jpg" alt="Screenshot_20200615_133340_net.saltycrackers.dayg" style="zoom: 25%;" />
+  - 效果类似下图                                                                                         ![](images/Screenshot_20200615_133340_net.saltycrackers.dayg.jpg)
 - 拥有密码功能，设置以后需要输入密码才能进入时间轴页面
 
 ##### 页面2：日记页

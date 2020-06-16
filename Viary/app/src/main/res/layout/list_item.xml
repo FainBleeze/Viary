@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="68dp"
+    android:paddingTop="4dp"
+    android:paddingBottom="4dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/rectangle_border"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/day_in_week"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:fontFamily="serif"
+                android:gravity="center"
+                android:text="MON"
+                android:textColor="@color/black" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray" />
+
+            <TextView
+                android:id="@+id/day_in_month"
+                android:layout_width="match_parent"
+                android:layout_height="39dp"
+                android:fontFamily="serif"
+                android:gravity="center"
+                android:text="7"
+                android:textColor="@color/black"
+                android:textSize="30sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/gray" />
+
+        <TextView
+            android:id="@+id/diary_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="11"
+            android:gravity="center_vertical"
+            android:lineSpacingExtra="4dp"
+            android:lines="2"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:text="TextView"
+            android:textColor="@color/black" />
+    </LinearLayout>
+</LinearLayout>

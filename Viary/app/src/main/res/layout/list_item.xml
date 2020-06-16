@@ -32,7 +32,7 @@
                 android:background="@color/gray" />
 
             <TextView
-                android:id="@+id/dya_in_month"
+                android:id="@+id/day_in_month"
                 android:layout_width="match_parent"
                 android:layout_height="39dp"
                 android:fontFamily="serif"
@@ -48,7 +48,7 @@
             android:background="@color/gray" />
 
         <TextView
-            android:id="@+id/dairy_brief"
+            android:id="@+id/diary_content"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="11"

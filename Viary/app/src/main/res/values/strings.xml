@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Viary</string>
+    <item name="tag_first" type="id"></item>
+    <item name="tag_second" type="id"></item>
 </resources>

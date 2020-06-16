@@ -16,4 +16,5 @@
     <string name="book_entry">记读后感</string>
     <string name="pic_tip">今天拍了什么好看的照片？</string>
     <string name="pic_entry">记张图片</string>
+    <string name="text_add">⊕添加......</string>
 </resources>

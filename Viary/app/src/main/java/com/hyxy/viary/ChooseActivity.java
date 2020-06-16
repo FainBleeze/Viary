@@ -39,6 +39,11 @@ public class ChooseActivity extends Activity {
                     if(isInView(motionEvent, view)) {
                         Intent txt = new Intent(ChooseActivity.this, DiaryActivity.class);
                         //添加数据传送
+                        Bundle bdl = getIntent().getExtras();
+                        if(bdl==null)
+                            bdl = new Bundle();
+                        bdl.putInt(params.TextTypeKey, view.getId());
+                        txt.putExtras(bdl);
                         startActivity(txt);
                     }
                     return true;

@@ -3,66 +3,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/darkgray"
+    android:background="@color/beige"
     android:orientation="horizontal">
 
-    <ImageView
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1" />
-
     <LinearLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="30"
         android:orientation="vertical">
 
         <RadioGroup
+            android:id="@+id/bar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:checkedButton="@id/btn_diary"
-            android:orientation="horizontal">
+            android:layout_height="0dp"
+            android:layout_weight="1.2"
+            android:orientation="horizontal"
+            tools:ignore="NestedWeights">
 
-            <RadioButton
-                android:id="@+id/btn_diary"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="@string/text_type1" />
 
-            <RadioButton
-                android:id="@+id/btn_film"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="@string/text_type2" />
-
-            <RadioButton
-                android:id="@+id/btn_book"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="@string/text_type3" />
-
-            <RadioButton
-                android:id="@+id/btn_bill"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="@string/text_type4" />
-
-            <RadioButton
-                android:id="@+id/btn_pic"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="@string/text_type5" />
         </RadioGroup>
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_weight="24"
             android:orientation="horizontal"
             tools:ignore="NestedWeights">
 
@@ -79,6 +43,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="top"
+                    android:paddingStart="5dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="5dp"
                     android:text="@string/default_date"
                     android:textColor="@color/black"
                     android:textSize="24sp" />
@@ -102,36 +69,12 @@
                     android:textSize="24sp"
                     tools:ignore="NestedWeights" />
             </LinearLayout>
-            <!--TextView
-                android:id="@+id/rightPic_film"
-                android:background="@color/beige"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.6"/>
-            <TextView
-                android:id="@+id/rightPic_book"
-                android:background="@color/azure"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.5"/>
-            <TextView
-                android:id="@+id/rightPic_bill"
-                android:background="@color/darkkhaki"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.4"/>
-            <TextView
-                android:id="@+id/rightPic_pic"
-                android:background="@color/gray"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.3"/-->
         </LinearLayout>
     </LinearLayout>
 
-    <ImageView
+    <!--ImageView
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1" />
+        android:layout_weight="1.5" /-->
 </LinearLayout>
 

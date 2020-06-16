@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RadioButton xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/btn_add"
+    android:layout_width="0dp"
+    android:layout_height="match_parent"
+    android:layout_weight="0.68"
+    android:background="@drawable/bar_add"
+    android:button="@null"
+    android:ellipsize="end"
+    android:gravity="center"
+    android:lines="1"
+    android:text="@string/text_add" />
+
+    <!--RadioButton
+                    android:id="@+id/btn_diary"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/dark_diary"
+                    android:background="@drawable/sel_diary"
+                    android:button="@null"
+                    android:ellipsize="end"
+                    android:gravity="center_vertical"
+                    android:lines="1"
+                    android:paddingStart="20dp"
+                    android:paddingLeft="20dp"
+                    android:paddingEnd="30dp"
+                    android:paddingRight="30dp"
+                    android:text="@string/text_type1" />
+
+                <RadioButton
+                    android:id="@+id/btn_film"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:background="@drawable/film"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="30dp"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    android:text="@string/text_type2"
+                    android:paddingEnd="30dp"
+                    android:paddingStart="20dp"  />
+
+                <RadioButton
+                    android:id="@+id/btn_book"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:background="@drawable/book"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="30dp"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    android:text="@string/text_type3"
+                    android:paddingEnd="30dp"
+                    android:paddingStart="20dp"  />
+
+                <RadioButton
+                    android:id="@+id/btn_bill"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:background="@drawable/pic"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="30dp"
+                    android:ellipsize="end"
+                    android:lines="1"
+                    android:text="@string/text_type4"
+                    android:paddingEnd="30dp"
+                    android:paddingStart="20dp"  /-->
+

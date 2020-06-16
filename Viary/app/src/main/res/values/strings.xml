@@ -1,5 +1,25 @@
 <resources>
     <string name="app_name">Viary</string>
+
     <item name="tag_first" type="id"></item>
     <item name="tag_second" type="id"></item>
+
+    <string name="text_type1">日记</string>
+    <string name="text_type2">观后感</string>
+    <string name="text_type3">读后感</string>
+    <string name="text_type4">图片</string>
+    <string name="text_type5">花销记录</string>
+    <string name="default_date">1999/01/01</string>
+    <string name="default_time">早上8:00</string>
+    <string name="default_weather">晴</string>
+    <string name="dairy_tip">今天发生了什么有趣的事？</string>
+    <string name="dairy_entry">记篇日记</string>
+    <string name="film_tip">今天看了哪些精彩的视频？</string>
+    <string name="film_entry">记观后感</string>
+    <string name="book_tip">今天读了什么书籍？</string>
+    <string name="book_entry">记读后感</string>
+    <string name="pic_tip">今天拍了什么好看的照片？</string>
+    <string name="pic_entry">记张图片</string>
+    <string name="text_add">⊕添加......</string>
+
 </resources>

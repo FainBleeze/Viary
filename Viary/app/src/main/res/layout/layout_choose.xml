@@ -165,7 +165,7 @@
         <ImageView
             android:layout_height="0dp"
             android:layout_width="match_parent"
-            android:layout_weight="10"/>
+            android:layout_weight="13"/>
     </LinearLayout>
     <ImageView
         android:layout_width="0dp"

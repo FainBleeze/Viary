@@ -60,7 +60,7 @@
 - 数据库形式：
   - 表名列名统一使用params类的静态参数获取
   - 表名：params.DBTABLENAME
-  - 主键：时间戳（年\_月\_日\_时\_分_秒）精确到秒，不会重名
+  - 主键：时间戳（精确到秒，不会重名）
 
 > - 时间戳 text   (params.DBODATE )
 > - 标题  text   (params.DBTITLE)

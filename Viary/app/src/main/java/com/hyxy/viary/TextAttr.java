@@ -5,10 +5,10 @@ public class TextAttr {
     public int type;
     public int colorId;
     public int RadioBtnId;
-    public String time;
-    public TextAttr(int type, String title, String time){
-        this.type=type;
-        this.title=title;
-        this.time = time;
+    public String text;
+    public TextAttr(int type, String title, String text){
+        this.type = type;
+        this.title = title;
+        this.text = text;
     }
 }

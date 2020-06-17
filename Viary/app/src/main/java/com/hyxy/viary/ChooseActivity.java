@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.constraintlayout.solver.widgets.ConstraintHorizontalLayout;
+
 public class ChooseActivity extends Activity {
     LinearLayout diary, film, book, pic;
     @SuppressLint("ClickableViewAccessibility")
@@ -25,6 +27,8 @@ public class ChooseActivity extends Activity {
         film.setOnTouchListener(lis);
         book.setOnTouchListener(lis);
         pic.setOnTouchListener(lis);
+        //安卓21以上时设置状态栏颜色和皮肤风格统一，使界面更加美观
+        params.windowColor(ChooseActivity.this);
     }
     private class MyTouchLis implements View.OnTouchListener{
 
@@ -43,6 +47,7 @@ public class ChooseActivity extends Activity {
                         if(bdl==null)
                             bdl = new Bundle();
                         bdl.putInt(params.TextTypeKey, view.getId());
+                        bdl.putBoolean("new", true);
                         txt.putExtras(bdl);
                         startActivity(txt);
                     }

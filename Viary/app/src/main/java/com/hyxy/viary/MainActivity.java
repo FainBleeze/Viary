@@ -2,8 +2,14 @@ package com.hyxy.viary;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -13,11 +19,18 @@ import java.util.List;
 public class MainActivity extends Activity {
     private ListView diaryListView;
     private List<DiaryItem> monthDiaryList=new ArrayList<>();
-
+    Dbo db_helper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_main);
+        //api高于23时，动态申请权限
+        verifyStoragePermissions(MainActivity.this);
+        //打开数据库
+        db_helper = new Dbo(MainActivity.this);
+        //用下面这个读取数据库，返回到cursor
+        SQLiteDatabase db = db_helper.getReadableDatabase();
+        Cursor res;
         monthDiaryList.add(new DiaryItem(2020,6,16,"June sixteen"));
         monthDiaryList.add(new DiaryItem(2020,6,17,null));
         monthDiaryList.add(new DiaryItem(2020,6,18,"June eighteen"));
@@ -35,6 +48,9 @@ public class MainActivity extends Activity {
         diaryListView=(ListView)findViewById(R.id.diary_listview);
         diaryListView.setAdapter(adapter);
         diaryListView.setOnItemClickListener(DiaryItemClickListener);
+
+        //安卓21以上时设置状态栏颜色和皮肤风格统一，使界面更加美观
+        params.windowColor(MainActivity.this);
     }
 
     private AdapterView.OnItemClickListener DiaryItemClickListener=new AdapterView.OnItemClickListener() {
@@ -43,9 +59,13 @@ public class MainActivity extends Activity {
             DiaryItem d=monthDiaryList.get(position);
             Intent intent=new Intent(MainActivity.this,ChooseActivity.class);
             Bundle bundle=new Bundle();
-            bundle.putInt("year",d.getYear());
-            bundle.putInt("month",d.getMonth());
-            bundle.putInt("day",d.getDay());
+            bundle.putInt(params.YearKey,d.getYear());
+            bundle.putInt(params.MonthKey,d.getMonth());
+            bundle.putInt(params.DayKey,d.getDay());
+            bundle.putBoolean("new", false);
+            //！！这里传个标题就行，不要内容，显示的时候也显示标题即可
+            //bundle.putString(params.TitleKey, d.getDiaryContent());
+            //不过可以做测试用
             bundle.putString("content",d.getDiaryContent());
             intent.putExtras(bundle);
             startActivityForResult(intent,1);
@@ -60,5 +80,22 @@ public class MainActivity extends Activity {
             default:
         }
         startActivity(new Intent(MainActivity.this, ChooseActivity.class));
+    }
+
+    //读写权限列表
+    private static String[] PERMISSIONS_STORAGE = {
+            "android.permission.READ_EXTERNAL_STORAGE",
+            "android.permission.WRITE_EXTERNAL_STORAGE" };
+
+    //申请读写权限
+    public void verifyStoragePermissions(Activity activity){
+        //低于6.0，无需动态申请
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            //检测是否有读的权限
+            int permission = activity.checkSelfPermission("android.permission.READ_EXTERNAL_STORAGE");
+            // 没有读的权限，去申请读写的权限，会弹出对话框
+            if (permission != PackageManager.PERMISSION_GRANTED)
+                activity.requestPermissions(PERMISSIONS_STORAGE, 1);
+        }
     }
 }

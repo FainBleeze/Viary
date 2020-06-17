@@ -59,5 +59,6 @@ public class MainActivity extends Activity {
 
             default:
         }
+        startActivity(new Intent(MainActivity.this, ChooseActivity.class));
     }
 }

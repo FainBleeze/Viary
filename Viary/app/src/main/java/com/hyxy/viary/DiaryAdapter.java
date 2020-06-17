@@ -56,7 +56,7 @@ public class DiaryAdapter extends BaseAdapter {
         ViewHolderDiary holderDiary=null;
         ViewHolderDot holderDot=null;
         int type=getItemViewType(position);
-        System.out.println("type:"+type);
+        //System.out.println("type:"+type);
 
         //if view未被实例化，new viewholder
         if(convertView==null){
@@ -108,7 +108,7 @@ public class DiaryAdapter extends BaseAdapter {
             day=Integer.toString(d.getDay());
         }
         week=getWeek(Integer.toString(d.getYear())+month+day);
-        System.out.println(week);
+        //System.out.println(week);
 
         switch(type){
             case TYPE_A:

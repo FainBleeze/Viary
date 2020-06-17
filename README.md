@@ -46,6 +46,34 @@
 
 
 
+### UI设计
+
+- 根据日记类型不同分为四个主题颜色。
+  - 在colors.xml中有四种颜色的定义
+  - 每种颜色都有饱和（透明度100）、深沉（透明度50）、浅色（透明度25）三种风格可以使用
+
+
+
+### 数据库设计
+
+- 数据库名称：使用params.DATABASE获取（DB_viary）
+- 数据库形式：
+  - 表名列名统一使用params类的静态参数获取
+  - 表名：params.DBTABLENAME
+  - 主键：时间戳（年\_月\_日\_时\_分_秒）精确到秒，不会重名
+
+> - 时间戳 text   (params.DBODATE )
+> - 标题  text   (params.DBTITLE)
+> - 类型  integer   (params.DBTYPE)
+> - 内容  text   (params.DBCONTENT)
+> - 年 integer   (params.DBOYEAR)
+> - 月 integer   (params.DBMONTH)
+> - 日 integer   (params.DBDAY)
+
+- 主页面仅读数据库，根据点击的日期查询年月日
+  - 有内容显示出来，点击时直接跳到日记页面
+  - 无内容显示 · ，点击时跳到选择新建类型的页面。
+
 
 
 ### 可参考项目

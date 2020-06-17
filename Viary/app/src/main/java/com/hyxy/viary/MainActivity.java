@@ -109,19 +109,25 @@ public class MainActivity extends Activity {
             //不过可以做测试用
             bundle.putString("content",d.getDiaryContent());
             intent.putExtras(bundle);
-            startActivityForResult(intent,1);
+            startActivity(intent);
         }
     };
 
+    /*
     @Override
     protected void onActivityResult(int requestCode,int resultCode,Intent data){
-        switch (requestCode){
-            case 1:
-
+        switch (resultCode){
+            case RESULT_OK:
+                //TODO: refresh();
+                System.out.println("MainActivity receive RESULT_OK");
+                break;
             default:
+                break;
         }
         //startActivity(new Intent(MainActivity.this, ChooseActivity.class));
     }
+
+     */
 
     //读写权限列表
     private static String[] PERMISSIONS_STORAGE = {
@@ -140,11 +146,14 @@ public class MainActivity extends Activity {
         }
     }
 
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-            finish();
-            System.exit(0);
+            Intent home = new Intent(Intent.ACTION_MAIN);
+            home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            home.addCategory(Intent.CATEGORY_HOME);
+            startActivity(home);
         }
         return super.onKeyDown(keyCode, event);
     }

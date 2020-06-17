@@ -104,7 +104,6 @@ public class ChooseActivity extends Activity {
     }
 
     //重写按键监听方法，按 返回键 时直接返回主界面
-    /*
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
@@ -113,6 +112,4 @@ public class ChooseActivity extends Activity {
         }
         return super.onKeyDown(keyCode, event);
     }
-
-     */
 }

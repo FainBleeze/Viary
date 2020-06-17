@@ -4,7 +4,6 @@
     android:layout_width="0dp"
     android:layout_height="match_parent"
     android:layout_weight="0.68"
-    android:background="@drawable/bar_add"
     android:button="@null"
     android:ellipsize="end"
     android:gravity="center"

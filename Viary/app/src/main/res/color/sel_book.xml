@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:drawable="@drawable/bar_add"
-        android:state_checked="false"/>
-    <item android:drawable="@drawable/bar_add_pressed"
+    <item android:color="@color/dark_book"
         android:state_checked="true"/>
+    <item android:color="@color/light_book"
+        android:state_checked="false"/>
 
 </selector>

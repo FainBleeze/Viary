@@ -1,6 +1,7 @@
 package com.hyxy.viary;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ListView;
 
@@ -23,5 +24,6 @@ public class MainActivity extends Activity {
         DiaryAdapter adapter=new DiaryAdapter(MainActivity.this,monthDiaryList);
         diaryListView=(ListView)findViewById(R.id.diary_listview);
         diaryListView.setAdapter(adapter);
+        startActivity(new Intent(MainActivity.this, ChooseActivity.class));
     }
 }

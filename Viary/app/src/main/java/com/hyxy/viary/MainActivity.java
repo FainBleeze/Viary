@@ -79,8 +79,8 @@ public class MainActivity extends Activity {
         monthDiaryList.add(new DiaryItem(2020,6,21,null));
         */
 
-        DiaryAdapter adapter=new DiaryAdapter(MainActivity.this,monthDiaryList);
-        adapter.notifyDataSetChanged();
+        DiaryAdapter adapter=new DiaryAdapter(MainActivity.this, monthDiaryList);
+        //adapter.notifyDataSetChanged();
         diaryListView=(ListView)findViewById(R.id.diary_listview);
         diaryListView.setAdapter(adapter);
         diaryListView.setOnItemClickListener(DiaryItemClickListener);
@@ -89,6 +89,7 @@ public class MainActivity extends Activity {
         params.windowColor(MainActivity.this);
     }
 
+    //ListView监听
     private AdapterView.OnItemClickListener DiaryItemClickListener=new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -147,7 +148,7 @@ public class MainActivity extends Activity {
         }
     }
 
-
+    //重写返回按钮，点击时返回桌面
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {

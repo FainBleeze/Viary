@@ -17,6 +17,8 @@ public class DiaryAdapter extends BaseAdapter {
     //type表示有无diary内容，以使用不同的viewholder
     private final int TYPE_A=0;
     private final int TYPE_B=1;
+    private int NUM_A = 0;
+    private int NUM_B = 0;
 
     private Context context;
     private List<DiaryItem> data;
@@ -59,55 +61,63 @@ public class DiaryAdapter extends BaseAdapter {
         //System.out.println("type:"+type);
 
         //if view未被实例化，new viewholder
-        if(convertView==null){
-            holderDiary= new ViewHolderDiary();
-            holderDot= new ViewHolderDot();
-            switch(type){
-                case TYPE_A:
-                    convertView=View.inflate(context,R.layout.list_item,null);
-                    holderDiary.dayInWeek=(TextView)convertView.findViewById(R.id.day_in_week);
-                    holderDiary.dayInMonth=(TextView)convertView.findViewById(R.id.day_in_month);
-                    holderDiary.diaryContent=(TextView)convertView.findViewById(R.id.diary_content);
-                    convertView.setTag(R.id.tag_first,holderDiary);
-                    break;
-                case TYPE_B:
-                    convertView=View.inflate(context,R.layout.list_item_dot,null);
-                    holderDot.dot=convertView.findViewById(R.id.dot);
-                    convertView.setTag(R.id.tag_second,holderDot);
-                    break;
-            }
-        }
-        //else view已初始化，根据tag取出viewholder
-        else{
-            switch(type){
-                case TYPE_A:
+//        if(convertView==null){
+        switch(type){
+            case TYPE_A:
+                if(convertView==null||convertView.getTag(R.id.tag_first)==null) {
+                    holderDiary = new ViewHolderDiary();
+                    convertView = View.inflate(context, R.layout.list_item, null);
+                    holderDiary.dayInWeek = (TextView) convertView.findViewById(R.id.day_in_week);
+                    holderDiary.dayInMonth = (TextView) convertView.findViewById(R.id.day_in_month);
+                    holderDiary.diaryContent = (TextView) convertView.findViewById(R.id.diary_content);
+                    convertView.setTag(R.id.tag_first, holderDiary);
+                }
+                else{
                     holderDiary=(ViewHolderDiary)convertView.getTag(R.id.tag_first);
-                    break;
-                case TYPE_B:
+                }
+                break;
+            case TYPE_B:
+                if(convertView==null||convertView.getTag(R.id.tag_second)==null) {
+                    holderDot = new ViewHolderDot();
+                    convertView = View.inflate(context, R.layout.list_item_dot, null);
+                    holderDot.dot = convertView.findViewById(R.id.dot);
+                    convertView.setTag(R.id.tag_second, holderDot);
+                }else {
                     holderDot=(ViewHolderDot)convertView.getTag(R.id.tag_second);
-                    break;
-            }
+                }
+                break;
         }
+//        }
+        //else view已初始化，根据tag取出viewholder
+//        else{
+//            switch(type){
+//                case TYPE_A:
+//                    holderDiary=(ViewHolderDiary)convertView.getTag(R.id.tag_first);
+//                    break;
+//                case TYPE_B:
+//                    holderDot=(ViewHolderDot)convertView.getTag(R.id.tag_second);
+//                    break;
+//            }
+//        }
 
         DiaryItem d=data.get(position);
 
         //计算周几
-        String month;
-        String day;
-        String week;
-        if(10>d.getMonth()){
-            month="0"+Integer.toString(d.getMonth());
-        }
-        else{
-            month=Integer.toString(d.getMonth());
-        }
-        if(10>d.getDay()){
-            day="0"+Integer.toString(d.getDay());
-        }
-        else{
-            day=Integer.toString(d.getDay());
-        }
-        week=getWeek(Integer.toString(d.getYear())+month+day);
+        String month = String.format("%2d",d.getMonth()).replace(" ","0");
+        String day= String.format("%2d",d.getDay()).replace(" ","0");
+        String week=getWeek(Integer.toString(d.getYear())+month+day);
+//        if(10>d.getMonth()){
+//            month="0"+Integer.toString(d.getMonth());
+//        }
+//        else{
+//            month=Integer.toString(d.getMonth());
+//        }
+//        if(10>d.getDay()){
+//            day="0"+Integer.toString(d.getDay());
+//        }
+//        else{
+//            day=Integer.toString(d.getDay());
+//        }
         //System.out.println(week);
 
         switch(type){

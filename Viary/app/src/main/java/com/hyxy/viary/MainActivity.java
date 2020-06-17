@@ -67,6 +67,7 @@ public class MainActivity extends Activity {
             }
             res.close();
         }
+        db.close();
 
         //测试用实例
         /*

@@ -6,9 +6,12 @@ public class TextAttr {
     public int colorId;
     public int RadioBtnId;
     public String text;
-    public TextAttr(int type, String title, String text){
+    public String stamp;
+    public Boolean alreadyExist = true;
+    public TextAttr(int type, String title, String text, String timeStamp){
         this.type = type;
         this.title = title;
         this.text = text;
+        this.stamp = timeStamp;
     }
 }

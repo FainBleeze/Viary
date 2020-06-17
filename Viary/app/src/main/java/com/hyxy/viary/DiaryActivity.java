@@ -31,6 +31,7 @@ public class DiaryActivity extends Activity {
     ArrayList<TextAttr> cards;
     Dbo db_helper;
     TextAttr cur_attr;
+    String new_file_time="";
     Boolean editing = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,16 +50,38 @@ public class DiaryActivity extends Activity {
     }
 
     //保存数据到数据库
-    private boolean save(TextAttr now_attr){
-        //String
-        //String timeStamp = String.valueOf(cal.getTimeInMillis());
-        return false;
+    private boolean save(){
+        //首先同步编辑框中的内容
+        cur_attr.text = ((EditText)findViewById(R.id.text)).getText().toString();
+        //没有任何修改时不记录
+        if(cur_attr.title=="一篇日记"||cur_attr.title=="一篇观后感"||cur_attr.title=="一篇读后感"||cur_attr.title=="一张图片"){
+            if(cur_attr.text.equals(new_file_time)){
+                return false;
+            }
+        }
+        SQLiteDatabase db = db_helper.getWritableDatabase();
+        if(cur_attr.alreadyExist){
+            String sql = "UPDATE "+params.DBTABLENAME+" SET "+params.DBTITLE+" = '"+cur_attr.title+"', "+params.DBCONTENT+" = '"+cur_attr.text+
+                    "' WHERE "+params.DBDATE+" = '"+cur_attr.stamp+"';";
+            db.execSQL(sql);
+        }
+        else{
+            String sql = "INSERT INTO "+params.DBTABLENAME+" "
+                    + "("+params.DBDATE+", "+ params.DBTITLE+", "+params.DBTYPE+", "+params.DBCONTENT+", "
+                    +params.DBYEAR+", "+ params.DBMONTH+", "+params.DBDAY+") "
+                    + "VALUES ('"+cur_attr.stamp+"', '"+cur_attr.title+"', "+cur_attr.type+", '"+cur_attr.text+"', "
+                    +bdl.getInt(params.YearKey)+", "+bdl.getInt(params.MonthKey)+", "+bdl.getInt(params.DayKey)+")";
+            db.execSQL(sql);
+        }
+        db.close();
+        return true;
     }
 
     //初始化所有需要显示的卡片
     private void intRadioBtn(){
         Calendar cal = Calendar.getInstance();
-        String time = cal.get(Calendar.HOUR) +":"+cal.get(Calendar.MINUTE);
+        new_file_time = String.format("%2d:%2d",cal.get(Calendar.HOUR_OF_DAY),cal.get(Calendar.MINUTE)).replace(" ","0");
+        new_file_time +="  ";
 
         //读取数据库中的内容
         SQLiteDatabase db = db_helper.getReadableDatabase();
@@ -68,45 +91,54 @@ public class DiaryActivity extends Activity {
                 String.valueOf(bdl.getInt(params.MonthKey)),
                 String.valueOf(bdl.getInt(params.DayKey))};
         Cursor res = db.rawQuery(sql, sql_params);
-        //有以前的日记，循环创建卡片
+        //如果有以前的日记，循环创建卡片
         if(res.getCount()>0){
             res.moveToFirst();
             cur_attr = new TextAttr(res.getInt(res.getColumnIndex(params.DBTYPE)),
                     res.getString(res.getColumnIndex(params.DBTITLE)),
-                    res.getString(res.getColumnIndex(params.DBCONTENT)));
+                    res.getString(res.getColumnIndex(params.DBCONTENT)),
+                    res.getString(res.getColumnIndex(params.DBDATE)));
             addRadioBtn(cur_attr);
             for(res.moveToNext();!res.isAfterLast();res.moveToNext()){
                 addRadioBtn(new TextAttr(res.getInt(res.getColumnIndex(params.DBTYPE)),
                         res.getString(res.getColumnIndex(params.DBTITLE)),
-                        res.getString(res.getColumnIndex(params.DBCONTENT))));
+                        res.getString(res.getColumnIndex(params.DBCONTENT)),
+                        res.getString(res.getColumnIndex(params.DBDATE))));
             }
         }
+        //关闭数据库
+        db.close();
         //判断是否新建文件
         Boolean new_file = bdl.getBoolean("new");
         if(new_file){
+            String timeStamp = String.valueOf(cal.getTimeInMillis());
             bdl.remove("new");
             switch(bdl.getInt(params.TextTypeKey)){
                 case R.id.diary_entry:
-                    cur_attr = new TextAttr(params.TYPE_DIARY, "一篇日记", time);
+                    cur_attr = new TextAttr(params.TYPE_DIARY, "一篇日记", new_file_time, timeStamp);
+                    cur_attr.alreadyExist = false;
                     addRadioBtn(cur_attr);
                     break;
                 case R.id.film_entry:
-                    cur_attr = new TextAttr(params.TYPE_FILM, "一篇观后感", time);
+                    cur_attr = new TextAttr(params.TYPE_FILM, "一篇观后感", new_file_time, timeStamp);
+                    cur_attr.alreadyExist = false;
                     addRadioBtn(cur_attr);
                     break;
                 case R.id.book_entry:
-                    cur_attr = new TextAttr(params.TYPE_BOOK, "一篇读后感", time);
+                    cur_attr = new TextAttr(params.TYPE_BOOK, "一篇读后感", new_file_time, timeStamp);
+                    cur_attr.alreadyExist = false;
                     addRadioBtn(cur_attr);
                     break;
                 case R.id.pic_entry:
-                    cur_attr = new TextAttr(params.TYPE_PIC, "一张图片", time);
+                    cur_attr = new TextAttr(params.TYPE_PIC, "一张图片", new_file_time, timeStamp);
+                    cur_attr.alreadyExist = false;
                     addRadioBtn(cur_attr);
                     break;
             }
         }
         //添加添加按钮
         assert cur_attr != null;
-        addRadioBtn(new TextAttr(params.TYPE_ADD, getResources().getString(R.string.text_add), time));
+        addRadioBtn(new TextAttr(params.TYPE_ADD, getResources().getString(R.string.text_add), new_file_time, ""));
         //设置页面特色
         changeCard();
     }
@@ -145,7 +177,13 @@ public class DiaryActivity extends Activity {
     //图片卡片需要显示ImageView
     private void adjustPicLayout() {
         ImageView image = findViewById(R.id.image);
+        image.setImageDrawable(getResources().getDrawable(R.drawable.bar));
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+            }
+        });
     }
 
     //添加一个RadioButton
@@ -189,16 +227,18 @@ public class DiaryActivity extends Activity {
         int id = View.generateViewId();
         attr.RadioBtnId = id;
         btn.setId(id);
-        if(cards.size()==0)
-            btn.setChecked(true);
         bar.addView(btn, cards.size());
+        if(attr.stamp.equals(cur_attr.stamp))
+            btn.setChecked(true);
         cards.add(attr);
     }
 
-    //RadioButton的监听器
+    //RadioButton的监听器，用于切换卡片
     private class barLis implements RadioGroup.OnCheckedChangeListener{
         @Override
         public void onCheckedChanged(RadioGroup radioGroup, int i) {
+            //保存数据先
+            save();
             int id=radioGroup.getCheckedRadioButtonId();
             //点击添加，返回到choose界面选择添加的类型
             if(id==cards.get(cards.size()-1).RadioBtnId){
@@ -218,6 +258,7 @@ public class DiaryActivity extends Activity {
                 }
             }
             assert text != null;
+            //更新当前的卡片参数
             cur_attr = text;
             //下面更新时间、标题
             changeCard();
@@ -251,6 +292,7 @@ public class DiaryActivity extends Activity {
                         @Override
                         public void onClick(View view) {
                             cur_attr.title = inputServer.getText().toString();
+                            cur_attr.text = ((EditText)findViewById(R.id.text)).getText().toString();
                             changeCard();
                             dialog.dismiss();
                             return;
@@ -266,9 +308,17 @@ public class DiaryActivity extends Activity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+            save();
             startActivity(new Intent(DiaryActivity.this, MainActivity.class));
             return true;
         }
         return super.onKeyDown(keyCode, event);
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        save();
+    }
+
 }

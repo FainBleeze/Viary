@@ -27,7 +27,7 @@ public class DiaryAdapter extends BaseAdapter {
 
     public int getItemViewType(int position){
         int result;
-        if(data.get(position).getDiaryContent()!=null){
+        if(data.get(position).getDiaryContent()!=null && data.get(position).getDiaryContent()!=""){
             result=TYPE_A;
         }
         else{

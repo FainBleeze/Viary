@@ -59,10 +59,10 @@ public class MainActivity extends Activity {
                 monthDiaryList.add(item);
             }
             else{
-                CharArrayBuffer buf = null;
-                res.copyStringToBuffer(res.getColumnIndex(params.DBCONTENT), buf);
-                System.out.println("day "+dayIndex+"'s buf is:"+buf.toString());
-                item=new DiaryItem(currentYear,currentMonth,dayIndex,buf.toString());
+                res.moveToFirst();
+                String s=res.getString(res.getColumnIndex(params.DBCONTENT));
+                System.out.println("day "+dayIndex+"'s buf is:"+s);
+                item=new DiaryItem(currentYear,currentMonth,dayIndex,s);
                 monthDiaryList.add(item);
             }
             res.close();

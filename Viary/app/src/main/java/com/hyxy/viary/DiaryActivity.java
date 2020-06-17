@@ -34,6 +34,7 @@ public class DiaryActivity extends Activity {
     TextAttr cur_attr;
     String new_file_time="";
     Boolean editing = false;
+    Intent intent=getIntent();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -314,6 +315,8 @@ public class DiaryActivity extends Activity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
             save();
+            //finish();
+            //DiaryActivity.this.setResult(RESULT_OK,intent);
             startActivity(new Intent(DiaryActivity.this, MainActivity.class));
             return true;
         }

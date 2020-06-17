@@ -72,7 +72,7 @@ public class DiaryActivity extends Activity {
                 setBg(btn, R.drawable.sel_pic, R.color.dark_pic, R.color.unchecked);
                 break;
             case params.TYPE_ADD:
-                setBg(btn, R.drawable.sel_add, R.color., R.color.unchecked);
+                setBg(btn, R.drawable.sel_add, R.color.red, R.color.unchecked);
                 break;
         }
         bar.addView(btn, 0);

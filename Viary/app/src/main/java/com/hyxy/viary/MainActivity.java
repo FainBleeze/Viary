@@ -41,7 +41,7 @@ public class MainActivity extends Activity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             DiaryItem d=monthDiaryList.get(position);
-            Intent intent=new Intent(MainActivity.this,DiaryActivity.class);
+            Intent intent=new Intent(MainActivity.this,ChooseActivity.class);
             Bundle bundle=new Bundle();
             bundle.putInt("year",d.getYear());
             bundle.putInt("month",d.getMonth());

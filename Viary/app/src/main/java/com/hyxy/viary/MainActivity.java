@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -137,5 +138,14 @@ public class MainActivity extends Activity {
             if (permission != PackageManager.PERMISSION_GRANTED)
                 activity.requestPermissions(PERMISSIONS_STORAGE, 1);
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+            finish();
+            System.exit(0);
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

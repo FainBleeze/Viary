@@ -305,15 +305,17 @@ public class DiaryActivity extends Activity {
     }
 
     //重写按键监听方法，按 返回键 时直接返回主界面
+    /*
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
             save();
-            startActivity(new Intent(DiaryActivity.this, MainActivity.class));
+            //startActivity(new Intent(DiaryActivity.this, MainActivity.class));
             return true;
         }
         return super.onKeyDown(keyCode, event);
     }
+     */
 
     @Override
     public void onPause() {

@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -72,6 +73,7 @@ public class DiaryActivity extends Activity {
                     + "VALUES ('"+cur_attr.stamp+"', '"+cur_attr.title+"', "+cur_attr.type+", '"+cur_attr.text+"', "
                     +bdl.getInt(params.YearKey)+", "+bdl.getInt(params.MonthKey)+", "+bdl.getInt(params.DayKey)+")";
             db.execSQL(sql);
+            cur_attr.alreadyExist=true;
         }
         db.close();
         return true;
@@ -177,7 +179,7 @@ public class DiaryActivity extends Activity {
     //图片卡片需要显示ImageView
     private void adjustPicLayout() {
         ImageView image = findViewById(R.id.image);
-        image.setImageDrawable(getResources().getDrawable(R.drawable.bar));
+        image.setImageDrawable(getResources().getDrawable(R.drawable.default_pic));
         image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -237,16 +239,19 @@ public class DiaryActivity extends Activity {
     private class barLis implements RadioGroup.OnCheckedChangeListener{
         @Override
         public void onCheckedChanged(RadioGroup radioGroup, int i) {
-            //保存数据先
+            //保存数据
             save();
             int id=radioGroup.getCheckedRadioButtonId();
+            System.out.println(i);
             //点击添加，返回到choose界面选择添加的类型
             if(id==cards.get(cards.size()-1).RadioBtnId){
+                System.out.println("aaa");
                 Intent choose = new Intent(DiaryActivity.this, ChooseActivity.class);
                 //添加数据传送
                 if(bdl!=null)
                     choose.putExtras(bdl);
                 startActivity(choose);
+                System.out.println("bbbb");
                 return;
             }
             //其他情况，找到被点击的卡片参数，改变card的背景颜色

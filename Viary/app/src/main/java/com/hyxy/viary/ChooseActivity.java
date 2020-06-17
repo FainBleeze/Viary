@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -100,5 +101,15 @@ public class ChooseActivity extends Activity {
         float maxY = v.getHeight();
         //Toast.makeText(ChooseActivity.this,"touchX"+touchX+"touchY"+touchY+"maxX"+maxX+"maxY"+maxY, Toast.LENGTH_LONG).show();
         return touchX>0 && touchX<maxX && touchY > 0 && touchY < maxY;
+    }
+
+    //重写按键监听方法，按 返回键 时直接返回主界面
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+            startActivity(new Intent(ChooseActivity.this, MainActivity.class));
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

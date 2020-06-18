@@ -58,7 +58,7 @@ public class DiaryAdapter extends BaseAdapter {
         ViewHolderDiary holderDiary=null;
         ViewHolderDot holderDot=null;
         int type=getItemViewType(position);
-        System.out.println("position:"+position);
+        //System.out.println("position:"+position);
 
         //if view未被实例化，new viewholder
 //        if(convertView==null){

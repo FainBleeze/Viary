@@ -226,24 +226,24 @@ public class DiaryActivity extends Activity {
             if(!res.moveToFirst())
                 return;
             String dir = res.getString(res.getColumnIndex(params.DBDIR));
-            if(!(new File(cur_attr.dir).canRead())){
-                cur_attr.dir=dir;
+            if(!(new File(cur_attr.dir)).exists()&&dir!=null){
+               cur_attr.dir=dir;
             }
             res.close();
             db.close();
         }
-        if(!cur_attr.dir.equals("")){
+        if(new File(cur_attr.dir).exists()){
             Bitmap bitmap = BitmapFactory.decodeFile(cur_attr.dir);
             if(bitmap!=null){
                 //image.setImageBitmap(bitmap);
                 image.setImageBitmap(bitmap);
             }
             else {
-                image.setImageDrawable(getResources().getDrawable(R.drawable.default_pic));
+                image.setImageDrawable(getResources().getDrawable(R.drawable.defualt_pic));
             }
         }
         else {
-            image.setImageDrawable(getResources().getDrawable(R.drawable.default_pic));
+            image.setImageDrawable(getResources().getDrawable(R.drawable.defualt_pic));
         }
         image.setOnClickListener(new View.OnClickListener() {
             @Override

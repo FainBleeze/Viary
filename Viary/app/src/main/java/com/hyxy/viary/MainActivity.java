@@ -3,7 +3,6 @@ package com.hyxy.viary;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.CharArrayBuffer;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
@@ -15,9 +14,15 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 public class MainActivity extends Activity {
     private ListView diaryListView;
@@ -50,6 +55,7 @@ public class MainActivity extends Activity {
                 +params.DBYEAR+"=? and "+params.DBMONTH+"=? and "+params.DBDAY+"=?;";
         //res.moveToFirst();
         DiaryItem item;
+        monthDiaryList.clear();
         for(int dayIndex=1;dayIndex<=currentDay;dayIndex++) {
             //System.out.println("dayIndex:"+dayIndex);
             String[] sql_params={Integer.toString(currentYear),Integer.toString(currentMonth),Integer.toString(dayIndex)};
@@ -79,7 +85,7 @@ public class MainActivity extends Activity {
         */
 
         DiaryAdapter adapter=new DiaryAdapter(MainActivity.this,monthDiaryList);
-        adapter.notifyDataSetChanged();
+        //adapter.notifyDataSetChanged();
         diaryListView=(ListView)findViewById(R.id.diary_listview);
         diaryListView.setAdapter(adapter);
         diaryListView.setOnItemClickListener(DiaryItemClickListener);

@@ -102,7 +102,7 @@ public class DiaryActivity extends Activity {
             db.execSQL(sql);
         }
         db.close();
-        Toast.makeText(DiaryActivity.this,"日记已保存",Toast.LENGTH_LONG).show();
+        Toast.makeText(DiaryActivity.this,"日记已保存",Toast.LENGTH_SHORT).show();
         return true;
     }
 

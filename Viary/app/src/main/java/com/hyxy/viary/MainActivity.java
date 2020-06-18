@@ -213,8 +213,10 @@ public class MainActivity extends Activity {
                 monthDiaryList.add(item);
             }
             else{
-                res.moveToFirst();
-                String s=res.getString(res.getColumnIndex(params.DBCONTENT));
+                String s="- ";
+                for(res.moveToFirst();!res.isAfterLast();res.moveToNext()){
+                    s+=res.getString(res.getColumnIndex(params.DBTITLE)) + " - ";
+                }
                 //System.out.println("day "+dayIndex+"'s buf is:"+s);
                 item=new DiaryItem(currentYear,currentMonth,dayIndex,s);
                 monthDiaryList.add(item);

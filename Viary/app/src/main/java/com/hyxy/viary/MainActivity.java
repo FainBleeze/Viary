@@ -51,48 +51,24 @@ public class MainActivity extends Activity {
         //api高于23时，动态申请权限
         verifyStoragePermissions(MainActivity.this);
 
-        //获取当前年、月以选择显示哪一月的diary
-        Calendar calendar=Calendar.getInstance();
-        currentYear=calendar.get(Calendar.YEAR);
-        currentMonth=calendar.get(Calendar.MONTH)+1;//从0开始，要+1
-        currentDay=calendar.get(Calendar.DAY_OF_MONTH);
-        int maxDayOfMonth=calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
-        System.out.println("year:"+currentYear+"\nmonth:"+currentMonth+"\nday:"+currentDay+"\nday of month:"+maxDayOfMonth);
-
-        //打开数据库
-        db_helper = new Dbo(MainActivity.this);
-        //用下面这个读取数据库，返回到cursor
-        SQLiteDatabase db = db_helper.getReadableDatabase();
-        String sql = "select * from "+params.DBTABLENAME+" where "
-                +params.DBYEAR+"=? and "+params.DBMONTH+"=? and "+params.DBDAY+"=?;";
-        //res.moveToFirst();
-        DiaryItem item;
-        monthDiaryList.clear();
-        for(int dayIndex=1;dayIndex<=currentDay;dayIndex++) {
-            //System.out.println("dayIndex:"+dayIndex);
-            String[] sql_params={Integer.toString(currentYear),Integer.toString(currentMonth),Integer.toString(dayIndex)};
-            Cursor res = db.rawQuery(sql, sql_params);
-            if(res.getCount()==0){
-                item=new DiaryItem(currentYear,currentMonth,dayIndex,null);
-                monthDiaryList.add(item);
-            }
-            else{
-                res.moveToFirst();
-                String s=res.getString(res.getColumnIndex(params.DBCONTENT));
-                //System.out.println("day "+dayIndex+"'s buf is:"+s);
-                item=new DiaryItem(currentYear,currentMonth,dayIndex,s);
-                monthDiaryList.add(item);
-            }
-            res.close();
+        Bundle bundle=getIntent().getExtras();
+        if(bundle==null){
+            //获取当前年、月以选择显示哪一月的diary
+            Calendar calendar=Calendar.getInstance();
+            currentYear=calendar.get(Calendar.YEAR);
+            currentMonth=calendar.get(Calendar.MONTH)+1;//从0开始，要+1
+            currentDay=calendar.get(Calendar.DAY_OF_MONTH);
+            //int maxDayOfMonth=calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
         }
-        db.close();
+        else{
+            currentYear=bundle.getInt(params.YearKey);
+            currentMonth=bundle.getInt(params.MonthKey);
+            currentDay=bundle.getInt(params.DayKey);
+        }
+        System.out.println("year:"+currentYear+"\nmonth:"+currentMonth+"\nday:"+currentDay);
 
-        DiaryAdapter adapter=new DiaryAdapter(MainActivity.this, monthDiaryList);
-        adapter.notifyDataSetChanged();
-        diaryListView=(ListView)findViewById(R.id.diary_listview);
-        diaryListView.setAdapter(adapter);
-        diaryListView.setOnItemClickListener(DiaryItemClickListener);
-        diaryListView.setOnItemLongClickListener(DiaryItemLongClickListener);
+
+        refresh(currentYear,currentMonth);
 
         //设置日期选择按钮图片
         ImageView monthSelector=(ImageView)findViewById(R.id.month_selector);
@@ -219,9 +195,15 @@ public class MainActivity extends Activity {
         DiaryItem item;
         monthDiaryList.clear();
         Calendar calendar=Calendar.getInstance();
-        calendar.set(Calendar.YEAR,year);
-        calendar.set(Calendar.MONTH,month);
-        int maxDayOfMonth=calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+        int maxDayOfMonth;
+        if(year==calendar.get(Calendar.YEAR) && month==calendar.get(Calendar.MONTH)+1){
+            maxDayOfMonth=calendar.get(Calendar.DAY_OF_MONTH);
+        }
+        else {
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH, month);
+            maxDayOfMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+        }
         for(int dayIndex=1;dayIndex<=maxDayOfMonth;dayIndex++) {
             //System.out.println("dayIndex:"+dayIndex);
             String[] sql_params={Integer.toString(year),Integer.toString(month),Integer.toString(dayIndex)};
@@ -246,6 +228,7 @@ public class MainActivity extends Activity {
         diaryListView=(ListView)findViewById(R.id.diary_listview);
         diaryListView.setAdapter(adapter);
         diaryListView.setOnItemClickListener(DiaryItemClickListener);
+        diaryListView.setOnItemLongClickListener(DiaryItemLongClickListener);
 
     }
 

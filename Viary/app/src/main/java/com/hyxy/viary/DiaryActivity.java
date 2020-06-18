@@ -413,7 +413,8 @@ public class DiaryActivity extends Activity {
             assert bundle==null;
             Intent intent=new Intent(DiaryActivity.this,MainActivity.class);
             intent.putExtras(bundle);
-            setResult(1,intent);
+            //setResult(1,intent);
+            startActivity(intent);
             finish();
             return true;
         }

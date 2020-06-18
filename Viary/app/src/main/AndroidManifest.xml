@@ -18,7 +18,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DiaryActivity"></activity>
+        <activity android:name=".DiaryActivity"/>
         <activity android:name=".ChooseActivity"/>
         <activity android:name=".MonthPickActivity"/>
     </application>

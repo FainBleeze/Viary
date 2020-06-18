@@ -60,6 +60,12 @@ public class DiaryActivity extends Activity {
         findViewById(R.id.date_title).setOnTouchListener(new editLis());
         //安卓21以上时设置状态栏颜色和皮肤风格统一，使界面更加美观
         params.windowColor(DiaryActivity.this);
+//        File f = Environment.getExternalStorageDirectory();
+//            if(f.canRead()){
+//                Toast.makeText(DiaryActivity.this,"可读",Toast.LENGTH_LONG).show();
+//            }else{
+//                Toast.makeText(DiaryActivity.this,"不可读",Toast.LENGTH_LONG).show();
+//            }
     }
 
     //保存数据到数据库
@@ -218,24 +224,14 @@ public class DiaryActivity extends Activity {
             Cursor res = db.rawQuery(sql, sql_params);
             if(!res.moveToFirst())
                 return;
-            cur_attr.dir = res.getString(res.getColumnIndex(params.DBDIR));
+            String dir = res.getString(res.getColumnIndex(params.DBDIR));
+            if(!(new File(cur_attr.dir).canRead())){
+                cur_attr.dir=dir;
+            }
             res.close();
             db.close();
         }
         if(!cur_attr.dir.equals("")){
-//            EditText txt= findViewById(R.id.text);
-//            txt.setText(cur_attr.dir);
-//            File f = Environment.getExternalStorageDirectory();
-//            if(f.canRead()){
-//                txt.setText(txt.getText().toString() + "---"+f.getAbsolutePath()+"权限OK");
-//            }
-//            else{
-//                txt.setText(txt.getText().toString() +"---"+Environment.getExternalStorageState()+ "---"+f.getAbsolutePath()+"权限NO");
-//            }
-//            File ff = new File(cur_attr.dir);
-//            if(ff.canRead()){
-//                txt.setText(txt.getText().toString() + "---文件OK");
-//            }
             Bitmap bitmap = BitmapFactory.decodeFile(cur_attr.dir);
             if(bitmap!=null){
                 //image.setImageBitmap(bitmap);

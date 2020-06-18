@@ -39,6 +39,11 @@ public class MainActivity extends Activity {
     private List<DiaryItem> monthDiaryList=new ArrayList<>();
     Dbo db_helper;
 
+    //request code
+    private final int CHOOSE_ACT=0;
+    private final int DIARY_ACT=1;
+    private final int MONTH_ACT=2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,17 +87,6 @@ public class MainActivity extends Activity {
         }
         db.close();
 
-        //测试用实例
-        /*
-        monthDiaryList.add(new DiaryItem(2020,6,16,"June sixteen"));
-        monthDiaryList.add(new DiaryItem(2020,6,17,null));
-        monthDiaryList.add(new DiaryItem(2020,6,18,"June eighteen"));
-        monthDiaryList.add(new DiaryItem(2020,6,19,null));
-        monthDiaryList.add(new DiaryItem(2020,6,20,null));
-        monthDiaryList.add(new DiaryItem(2020,6,21,null));
-        */
-
-
         DiaryAdapter adapter=new DiaryAdapter(MainActivity.this, monthDiaryList);
         adapter.notifyDataSetChanged();
         diaryListView=(ListView)findViewById(R.id.diary_listview);
@@ -118,7 +112,7 @@ public class MainActivity extends Activity {
             bundle.putInt(params.MonthKey,currentMonth);
             bundle.putInt(params.DayKey,currentDay);
             intent.putExtras(bundle);
-            startActivityForResult(intent,1);
+            startActivityForResult(intent,MONTH_ACT);
         }
     };
 
@@ -130,21 +124,32 @@ public class MainActivity extends Activity {
             Intent intent;
             if(d.getDiaryContent()==null){
                 intent=new Intent(MainActivity.this,ChooseActivity.class);
+                Bundle bundle=new Bundle();
+                bundle.putInt(params.YearKey,d.getYear());
+                bundle.putInt(params.MonthKey,d.getMonth());
+                bundle.putInt(params.DayKey,d.getDay());
+                bundle.putBoolean("new", false);
+                //！！这里传个标题就行，不要内容，显示的时候也显示标题即可
+                //bundle.putString(params.TitleKey, d.getDiaryContent());
+                //不过可以做测试用
+                bundle.putString("content",d.getDiaryContent());
+                intent.putExtras(bundle);
+                startActivityForResult(intent,CHOOSE_ACT);
             }
             else{
                 intent=new Intent(MainActivity.this,DiaryActivity.class);
+                Bundle bundle=new Bundle();
+                bundle.putInt(params.YearKey,d.getYear());
+                bundle.putInt(params.MonthKey,d.getMonth());
+                bundle.putInt(params.DayKey,d.getDay());
+                bundle.putBoolean("new", false);
+                //！！这里传个标题就行，不要内容，显示的时候也显示标题即可
+                //bundle.putString(params.TitleKey, d.getDiaryContent());
+                //不过可以做测试用
+                bundle.putString("content",d.getDiaryContent());
+                intent.putExtras(bundle);
+                startActivityForResult(intent,DIARY_ACT);
             }
-            Bundle bundle=new Bundle();
-            bundle.putInt(params.YearKey,d.getYear());
-            bundle.putInt(params.MonthKey,d.getMonth());
-            bundle.putInt(params.DayKey,d.getDay());
-            bundle.putBoolean("new", false);
-            //！！这里传个标题就行，不要内容，显示的时候也显示标题即可
-            //bundle.putString(params.TitleKey, d.getDiaryContent());
-            //不过可以做测试用
-            bundle.putString("content",d.getDiaryContent());
-            intent.putExtras(bundle);
-            startActivity(intent);
         }
     };
 
@@ -183,22 +188,25 @@ public class MainActivity extends Activity {
     //接受日期选择
     @Override
     protected void onActivityResult(int requestCode,int resultCode,Intent data){
-        switch (resultCode){
-            case 1:
-                Bundle bundle=data.getExtras();
-                int selectYear=bundle.getInt(params.YearKey);
-                int selectMonth=bundle.getInt(params.MonthKey);
-                int selectDay=bundle.getInt(params.DayKey);
-                currentYear=selectYear;
-                currentMonth=selectMonth;
-                currentDay=selectDay;
-                System.out.println("selectYear:"+selectYear+"\nselectMonth:"+selectMonth+"\nselectDay:"+selectDay);
-                refresh(selectYear,selectMonth);
+        switch (requestCode) {
+            case CHOOSE_ACT:
+            case DIARY_ACT:
+            case MONTH_ACT:
+                if (resultCode == 1) {
+                    Bundle bundle = data.getExtras();
+                    int selectYear = bundle.getInt(params.YearKey);
+                    int selectMonth = bundle.getInt(params.MonthKey);
+                    int selectDay = bundle.getInt(params.DayKey);
+                    currentYear = selectYear;
+                    currentMonth = selectMonth;
+                    currentDay = selectDay;
+                    System.out.println("selectYear:" + selectYear + "\nselectMonth:" + selectMonth + "\nselectDay:" + selectDay);
+                    refresh(selectYear, selectMonth);
+                }
                 break;
             default:
                 break;
         }
-        //startActivity(new Intent(MainActivity.this, ChooseActivity.class));
     }
 
     public void refresh(int year,int month){

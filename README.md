@@ -9,8 +9,8 @@
 
 - ```xml
   applicationId "com.hyxy.viary"
-  minSdkVersion 16
-  targetSdkVersion 29
+  minSdkVersion 17
+  targetSdkVersion 28
   versionCode 1
   versionName "1.0"
   ```
@@ -24,7 +24,6 @@
 - 显示日期时间轴
   - 可选择日期记日记
   - 有日记的日期显示其内容
-  - 效果类似下图                                                                                         ![](images/Screenshot_20200615_133340_net.saltycrackers.dayg.jpg)
 - 拥有密码功能，设置以后需要输入密码才能进入时间轴页面
 
 ##### 页面2：日记页
@@ -74,9 +73,3 @@
   - 有内容显示出来，点击时直接跳到日记页面
   - 无内容显示 · ，点击时跳到选择新建类型的页面。
 
-
-
-### 可参考项目
-
-- MyDaygram（SSH）：git@github.com:zhengyijia/MyDaygram.git
-  - （HTTP）：https://github.com/zhengyijia/MyDaygram.git

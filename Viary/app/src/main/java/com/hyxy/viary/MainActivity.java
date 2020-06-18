@@ -201,7 +201,7 @@ public class MainActivity extends Activity {
         }
         else {
             calendar.set(Calendar.YEAR, year);
-            calendar.set(Calendar.MONTH, month);
+            calendar.set(Calendar.MONTH, month - 1);
             maxDayOfMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
         }
         for(int dayIndex=1;dayIndex<=maxDayOfMonth;dayIndex++) {

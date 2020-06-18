@@ -78,14 +78,18 @@ public class DiaryActivity extends Activity {
                 return false;
             }
         }
+        //没有修改不记录
         if(cur_attr.title.equals("一张图片")&&cur_attr.text.equals(new_file_time)&&cur_attr.dir.equals(""))
             return false;
+        //有修改时记录数据
         SQLiteDatabase db = db_helper.getWritableDatabase();
+        //已有数据执行更新操作
         if(cur_attr.alreadyExist){
             String sql = "UPDATE "+params.DBTABLENAME+" SET "+params.DBTITLE+" = '"+cur_attr.title+"', "+params.DBCONTENT+" = '"+cur_attr.text+
                     "' WHERE "+params.DBDATE+" = '"+cur_attr.stamp+"';";
             db.execSQL(sql);
         }
+        //新建数据执行插入操作
         else{
             String sql = "INSERT INTO "+params.DBTABLENAME+" "
                     + "("+params.DBDATE+", "+ params.DBTITLE+", "+params.DBTYPE+", "+params.DBCONTENT+", "
@@ -95,6 +99,7 @@ public class DiaryActivity extends Activity {
             db.execSQL(sql);
             cur_attr.alreadyExist=true;
         }
+        //如果是图片类型，则需要额外记录图片路径
         if(cur_attr.type==params.TYPE_PIC&&!cur_attr.dir.equals("")){
             //设置图片路径
             String sql = "UPDATE "+params.DBTABLENAME+" SET "+params.DBDIR+" = '"+cur_attr.dir+
@@ -109,7 +114,8 @@ public class DiaryActivity extends Activity {
     //初始化所有需要显示的卡片
     private void intRadioBtn(){
         Calendar cal = Calendar.getInstance();
-        new_file_time = String.format("%2d:%2d",cal.get(Calendar.HOUR_OF_DAY),cal.get(Calendar.MINUTE)).replace(" ","0");
+        new_file_time = String.format("%2d:%2d",cal.get(Calendar.HOUR_OF_DAY),
+                cal.get(Calendar.MINUTE)).replace(" ","0");
         new_file_time +="  ";
 
         //读取数据库中的内容
@@ -165,7 +171,7 @@ public class DiaryActivity extends Activity {
                     break;
             }
         }
-        //添加添加按钮
+        //添加新建按钮
         assert cur_attr != null;
         addRadioBtn(new TextAttr(params.TYPE_ADD, getResources().getString(R.string.text_add), new_file_time, ""));
         //设置页面特色
@@ -216,6 +222,7 @@ public class DiaryActivity extends Activity {
     //图片卡片需要显示ImageView
     private void adjustPicLayout() {
         ImageView image = findViewById(R.id.image);
+        //如果是以前的日记
         if(cur_attr.alreadyExist){
             //读取数据库中的内容
             SQLiteDatabase db = db_helper.getReadableDatabase();
@@ -226,12 +233,14 @@ public class DiaryActivity extends Activity {
             if(!res.moveToFirst())
                 return;
             String dir = res.getString(res.getColumnIndex(params.DBDIR));
+            //判断数据库中的路径是否有效
             if(!(new File(cur_attr.dir)).exists()&&dir!=null){
                cur_attr.dir=dir;
             }
             res.close();
             db.close();
         }
+        //如果路径合法，读取图片并显示
         if(new File(cur_attr.dir).exists()){
             Bitmap bitmap = BitmapFactory.decodeFile(cur_attr.dir);
             if(bitmap!=null){
@@ -242,9 +251,11 @@ public class DiaryActivity extends Activity {
                 image.setImageDrawable(getResources().getDrawable(R.drawable.defualt_pic));
             }
         }
+        //否则显示默认的加号
         else {
             image.setImageDrawable(getResources().getDrawable(R.drawable.defualt_pic));
         }
+        //设置监听器，被点击时调用选择图片的api
         image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -288,6 +299,7 @@ public class DiaryActivity extends Activity {
         btn.setEllipsize(TextUtils.TruncateAt.END);
         btn.setGravity(Gravity.CENTER_VERTICAL);
         btn.setLines(1);
+        //隐藏RadioButton左边的按钮
         Bitmap a=null;
         btn.setButtonDrawable(new BitmapDrawable(a));
         if(attr.type == params.TYPE_ADD) {
@@ -298,6 +310,7 @@ public class DiaryActivity extends Activity {
             btn.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, 100));
             btn.setBackground(getResources().getDrawable(R.drawable.bar_diary));
         }
+        //根据类型的不同为背景图上色，使其与界面色调统一
         switch(attr.type){
             case params.TYPE_DIARY:
                 attr.colorId =  R.color.sel_diary;

@@ -107,7 +107,13 @@ public class ChooseActivity extends Activity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-            startActivity(new Intent(ChooseActivity.this, MainActivity.class));
+            //startActivity(new Intent(ChooseActivity.this, MainActivity.class));
+            Bundle bundle=getIntent().getExtras();
+            assert bundle==null;
+            Intent intent=new Intent(ChooseActivity.this,MainActivity.class);
+            intent.putExtras(bundle);
+            setResult(1,intent);
+            finish();
             return true;
         }
         return super.onKeyDown(keyCode, event);

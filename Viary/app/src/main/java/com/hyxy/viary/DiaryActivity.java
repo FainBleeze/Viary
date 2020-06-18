@@ -396,9 +396,13 @@ public class DiaryActivity extends Activity {
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
             save();
-            //finish();
-            //DiaryActivity.this.setResult(RESULT_OK,intent);
-            startActivity(new Intent(DiaryActivity.this, MainActivity.class));
+            //startActivity(new Intent(DiaryActivity.this, MainActivity.class));
+            Bundle bundle=getIntent().getExtras();
+            assert bundle==null;
+            Intent intent=new Intent(DiaryActivity.this,MainActivity.class);
+            intent.putExtras(bundle);
+            setResult(1,intent);
+            finish();
             return true;
         }
         return super.onKeyDown(keyCode, event);

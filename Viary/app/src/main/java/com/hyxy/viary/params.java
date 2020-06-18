@@ -25,6 +25,8 @@ public class params {
     static String DBYEAR = "DB_year";
     static String DBMONTH = "DB_month";
     static String DBDAY = "DB_day";
+    static String DBDIR = "DB_dir";
+    static final int IMAGE_REQUEST_CODE = 1;
     static void windowColor(Activity act){
         //安卓21以上时设置状态栏颜色和皮肤风格统一，使界面更加美观
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

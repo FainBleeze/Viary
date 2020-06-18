@@ -8,6 +8,7 @@ public class TextAttr {
     public String text;
     public String stamp;
     public Boolean alreadyExist = true;
+    public String dir = "";
     public TextAttr(int type, String title, String text, String timeStamp){
         this.type = type;
         this.title = title;

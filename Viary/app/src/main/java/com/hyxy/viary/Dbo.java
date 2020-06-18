@@ -21,6 +21,7 @@ public class Dbo extends SQLiteOpenHelper {
                 +params.DBCONTENT+" text, "
                 +params.DBYEAR+" integer, "
                 +params.DBMONTH+" integer, "
+                +params.DBDIR+" text, "
                 +params.DBDAY+" integer);";
         sqLiteDatabase.execSQL(sql);    //执行SQL语句
     }

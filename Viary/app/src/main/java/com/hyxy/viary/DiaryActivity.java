@@ -5,10 +5,15 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -23,6 +28,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -56,11 +65,13 @@ public class DiaryActivity extends Activity {
         //首先同步编辑框中的内容
         cur_attr.text = ((EditText)findViewById(R.id.text)).getText().toString();
         //没有任何修改时不记录
-        if(cur_attr.title=="一篇日记"||cur_attr.title=="一篇观后感"||cur_attr.title=="一篇读后感"||cur_attr.title=="一张图片"){
+        if(cur_attr.title.equals("一篇日记") || cur_attr.title.equals("一篇观后感") || cur_attr.title.equals("一篇读后感")){
             if(cur_attr.text.equals(new_file_time)){
                 return false;
             }
         }
+        if(cur_attr.title.equals("一张图片")&&cur_attr.text.equals(new_file_time)&&cur_attr.dir.equals(""))
+            return false;
         SQLiteDatabase db = db_helper.getWritableDatabase();
         if(cur_attr.alreadyExist){
             String sql = "UPDATE "+params.DBTABLENAME+" SET "+params.DBTITLE+" = '"+cur_attr.title+"', "+params.DBCONTENT+" = '"+cur_attr.text+
@@ -75,6 +86,12 @@ public class DiaryActivity extends Activity {
                     +bdl.getInt(params.YearKey)+", "+bdl.getInt(params.MonthKey)+", "+bdl.getInt(params.DayKey)+")";
             db.execSQL(sql);
             cur_attr.alreadyExist=true;
+        }
+        if(cur_attr.type==params.TYPE_PIC&&!cur_attr.dir.equals("")){
+            //设置图片路径
+            String sql = "UPDATE "+params.DBTABLENAME+" SET "+params.DBDIR+" = '"+cur_attr.dir+
+                    "' WHERE "+params.DBDATE+" = '"+cur_attr.stamp+"';";
+            db.execSQL(sql);
         }
         db.close();
         return true;
@@ -156,12 +173,15 @@ public class DiaryActivity extends Activity {
         switch (cur_attr.type){
             case params.TYPE_DIARY:
                 title = "“"+cur_attr.title+"”";
+                hidePic();
                 break;
             case params.TYPE_FILM:
                 title = "『"+cur_attr.title+"』";
+                hidePic();
                 break;
             case params.TYPE_BOOK:
                 title = "《"+cur_attr.title+"》";
+                hidePic();
                 break;
             case params.TYPE_PIC:
                 title = "【"+cur_attr.title+"】";
@@ -177,16 +197,77 @@ public class DiaryActivity extends Activity {
         txt.setFocusableInTouchMode(false);
     }
 
+    //其他卡片隐藏图片
+    private  void hidePic(){
+        ImageView image = findViewById(R.id.image);
+        Bitmap a=null;
+        image.setImageDrawable(new BitmapDrawable(a));
+    }
+
     //图片卡片需要显示ImageView
     private void adjustPicLayout() {
         ImageView image = findViewById(R.id.image);
-        image.setImageDrawable(getResources().getDrawable(R.drawable.default_pic));
+        if(cur_attr.alreadyExist){
+            //读取数据库中的内容
+            SQLiteDatabase db = db_helper.getReadableDatabase();
+            String sql = "select * from "+params.DBTABLENAME+" where "
+                    +params.DBDATE+"=?;";
+            String[] sql_params={cur_attr.stamp};
+            Cursor res = db.rawQuery(sql, sql_params);
+            if(!res.moveToFirst())
+                return;
+            cur_attr.dir = res.getString(res.getColumnIndex(params.DBDIR));
+            db.close();
+        }
+        if(!cur_attr.dir.equals("")){
+            ((EditText)findViewById(R.id.text)).setText(cur_attr.dir);
+            Bitmap bitmap = BitmapFactory.decodeFile(cur_attr.dir);
+            if(bitmap!=null){
+                //image.setImageBitmap(bitmap);
+                image.setImageBitmap(bitmap);
+            }
+            else {
+                image.setImageDrawable(getResources().getDrawable(R.drawable.default_pic));
+            }
+        }
+        else {
+            image.setImageDrawable(getResources().getDrawable(R.drawable.default_pic));
+        }
         image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(
+                        Intent.ACTION_PICK,
+                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(intent, params.IMAGE_REQUEST_CODE);
             }
         });
+    }
+
+    //图库的回调
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //在相册里面选择好相片之后调回到现在的这个activity中
+        switch (requestCode) {
+            case params.IMAGE_REQUEST_CODE://这里的requestCode是我自己设置的，就是确定返回到那个Activity的标志
+                if (resultCode == RESULT_OK) {//resultcode是setResult里面设置的code值
+                    try {
+                        Uri selectedImage = data.getData(); //获取系统返回的照片的Uri
+                        String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                        Cursor cursor = getContentResolver().query(selectedImage,
+                                filePathColumn, null, null, null);//从系统表中查询指定Uri对应的照片
+                        cursor.moveToFirst();
+                        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                        cur_attr.dir = cursor.getString(columnIndex);  //获取照片路径
+                        adjustPicLayout();
+                        cursor.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+        }
     }
 
     //添加一个RadioButton

@@ -82,17 +82,6 @@ public class MainActivity extends Activity {
         }
         db.close();
 
-        //测试用实例
-        /*
-        monthDiaryList.add(new DiaryItem(2020,6,16,"June sixteen"));
-        monthDiaryList.add(new DiaryItem(2020,6,17,null));
-        monthDiaryList.add(new DiaryItem(2020,6,18,"June eighteen"));
-        monthDiaryList.add(new DiaryItem(2020,6,19,null));
-        monthDiaryList.add(new DiaryItem(2020,6,20,null));
-        monthDiaryList.add(new DiaryItem(2020,6,21,null));
-        */
-
-
         DiaryAdapter adapter=new DiaryAdapter(MainActivity.this, monthDiaryList);
         adapter.notifyDataSetChanged();
         diaryListView=(ListView)findViewById(R.id.diary_listview);

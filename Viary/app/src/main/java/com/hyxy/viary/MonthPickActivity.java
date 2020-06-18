@@ -10,6 +10,7 @@ import android.widget.CalendarView;
 import androidx.annotation.NonNull;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class MonthPickActivity extends Activity {
     private CalendarView calendarView;
@@ -24,6 +25,7 @@ public class MonthPickActivity extends Activity {
         Bundle bundle=intent.getExtras();
         selectYear=bundle.getInt(params.YearKey);
         selectMonth=bundle.getInt(params.MonthKey);
+        //System.out.println("receive month:"+selectMonth);
         selectDay=bundle.getInt(params.DayKey);
         calendarView=(CalendarView)findViewById(R.id.calendarView);
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
@@ -48,5 +50,14 @@ public class MonthPickActivity extends Activity {
                 finish();
             }
         });
+
+        //设置最大可选时间为现在
+        Calendar calendar=Calendar.getInstance();
+        calendarView.setMaxDate(calendar.getTimeInMillis());
+        //设置默认显示月份为主页面正在显示的月份
+        calendar.set(Calendar.YEAR,selectYear);
+        calendar.set(Calendar.MONTH,selectMonth-1);
+        calendar.set(Calendar.DAY_OF_MONTH,selectDay);
+        calendarView.setDate(calendar.getTimeInMillis());
     }
 }

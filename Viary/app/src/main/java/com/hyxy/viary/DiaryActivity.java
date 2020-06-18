@@ -2,6 +2,7 @@ package com.hyxy.viary;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -32,6 +33,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.security.Permission;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -217,10 +219,23 @@ public class DiaryActivity extends Activity {
             if(!res.moveToFirst())
                 return;
             cur_attr.dir = res.getString(res.getColumnIndex(params.DBDIR));
+            res.close();
             db.close();
         }
         if(!cur_attr.dir.equals("")){
-            ((EditText)findViewById(R.id.text)).setText(cur_attr.dir);
+//            EditText txt= findViewById(R.id.text);
+//            txt.setText(cur_attr.dir);
+//            File f = Environment.getExternalStorageDirectory();
+//            if(f.canRead()){
+//                txt.setText(txt.getText().toString() + "---"+f.getAbsolutePath()+"权限OK");
+//            }
+//            else{
+//                txt.setText(txt.getText().toString() +"---"+Environment.getExternalStorageState()+ "---"+f.getAbsolutePath()+"权限NO");
+//            }
+//            File ff = new File(cur_attr.dir);
+//            if(ff.canRead()){
+//                txt.setText(txt.getText().toString() + "---文件OK");
+//            }
             Bitmap bitmap = BitmapFactory.decodeFile(cur_attr.dir);
             if(bitmap!=null){
                 //image.setImageBitmap(bitmap);
@@ -238,7 +253,7 @@ public class DiaryActivity extends Activity {
             public void onClick(View view) {
                 Intent intent = new Intent(
                         Intent.ACTION_PICK,
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intent, params.IMAGE_REQUEST_CODE);
             }
         });
@@ -409,5 +424,4 @@ public class DiaryActivity extends Activity {
         super.onPause();
         save();
     }
-
 }
